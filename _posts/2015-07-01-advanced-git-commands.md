@@ -270,6 +270,8 @@ Show me what I'm commiting!
 
 #### git filter-branch
 remove password commit file
+filter-branch -f --index-filter 'git rm --cached --ignore-unmatch password.txt' HEAD^^^^..HEAD 
+commits are different, why?
 
 #### git apply
 
