@@ -269,6 +269,14 @@ Document those well, commit appropriately
 Checkout both projects
 diff -rq to see if there are any file differences
 
+
+#### git filter-branch
+remove password commit file
+filter-branch -f --index-filter 'git rm --cached --ignore-unmatch password.txt' HEAD^^^^..HEAD 
+commits are different, why?
+
+git cat-file commit HEAD
+
 #### git add -p
 **Description**: The git add -p option allows one to add `hunks` at a time per 
 commit  
@@ -282,10 +290,7 @@ rest later.
 #### git commit -v
 Show me what I'm commiting!
 
-#### git filter-branch
-remove password commit file
-filter-branch -f --index-filter 'git rm --cached --ignore-unmatch password.txt' HEAD^^^^..HEAD 
-commits are different, why?
+
 
 #### git apply
 
@@ -298,7 +303,8 @@ commits are different, why?
 **Example**: The touring-cyclist hospitality network 
 
 
-### git prune
+### git remote prune
+git remote prune -n chrisarusso 
 Remove stale refs
 
 #### git revert
@@ -306,8 +312,6 @@ Reverse a commit
 
 ### git commit --amend 
 Rewrite history on the most recent commit
-
-
 
 ### git cherry-pick
 Apply a given commit to current branch
@@ -319,6 +323,9 @@ Apply a given commit to current branch
 Description: Find the bad commit
 Use-case: Anytime something is breaking... often visually
 Example:
+178966d = bad commit
+36748c8 = example good commit
+
 
 #### git clean
 Description: Never used it!
