@@ -7,6 +7,8 @@ tags: git efficiency
 summary: A few quick git examples and use-cases , round #1
 ---
 
+Much like my compost, and my git, we keep it local.
+--everything-is-local
 Holy git you can do a lot with this tool.
 
 You're familiar, you use it, but want to use it better.
@@ -253,7 +255,19 @@ Defaults to show head
 git show <commit>
 
 
-# Writing
+# Writing/rewriting
+
+### git rebase - i
+Safe + clean workflow, best of both worlds! 
+Bitbucket = free private repos
+Github / wherever else - collaboration point where others might see
+Commit often, with messy explanatory messages and code. Always push to have
+backup off of your laptop.
+When code is tested, and working... step backwards with git rebase -i
+make brand new commits using git add -p 
+Document those well, commit appropriately
+Checkout both projects
+diff -rq to see if there are any file differences
 
 #### git add -p
 **Description**: The git add -p option allows one to add `hunks` at a time per 
@@ -293,17 +307,7 @@ Reverse a commit
 ### git commit --amend 
 Rewrite history on the most recent commit
 
-### git rebase - i
-Safe + clean workflow, best of both worlds! 
-Bitbucket = free private repos
-Github / wherever else - collaboration point where others might see
-Commit often, with messy explanatory messages and code. Always push to have
-backup off of your laptop.
-When code is tested, and working... step backwards with git rebase -i
-make brand new commits using git add -p 
-Document those well, commit appropriately
-Checkout both projects
-diff -rq to see if there are any file differences
+
 
 ### git cherry-pick
 Apply a given commit to current branch
