@@ -105,6 +105,11 @@ MacBook-Pro:savas-site chris$   git branch -av
 {% endhighlight %}
 
 #### git blame
+
+Per Dan's request: git blame = annotations PHPStorm
+                   
+                   
+                  
 **Description**: The git blame command shows who did what, when, why and how, line
 by-line. It's the ultimate blame-game and I **_LOVE_** it.    
 **Use case**: Someone wrote custom code doing something complex but did not 
@@ -286,6 +291,9 @@ history and purpose better. You may also want to leave out some comments or
 testing code but don't have time to do all the cleaning before you leave for the
 day. With `git add -p` you can add just the lines you want, and deal with the 
 rest later.
+
+Dan's recommendation:  git checkout -p
+                                         git reset -p
 
 #### git commit -v
 Show me what I'm commiting!
