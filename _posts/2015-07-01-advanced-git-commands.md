@@ -390,3 +390,4 @@ MacBook-Pro:savas-site chris$ git branch -a
 {% endhighlight %}
 
 
+push force:  + 1c2decb...4df726d advanced-git -> advanced-git (forced update)
