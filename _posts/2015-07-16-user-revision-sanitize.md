@@ -7,6 +7,8 @@ tags: Drupal
 summary: The user revision module does not (_yet_) care about `drush sqlsan`, and it should!
 ---
 
+#### The general problem
+
 One of the most embarrassing, and potentially costly things we can do as developers
 is to send emails out to real people unintentionally from a development 
 environment. It happens, and often times, we aren't even aware of it, until the damage
@@ -16,12 +18,13 @@ existing customers (actually happened to a former employer recently).
 
  In the Drupal world, there are myriad ways to attempt to address this problem. 
     
-### Options
+#### Some general solutions
 - [maillog](https://www.drupal.org/projectn /maillog) - logs mails, allows you to "not send" them.
 - [mailcatcher](http://mailcatcher.me/) - Need to ask the boys how to set this one up
 - [reroute email](https://www.drupal.org/project/reroute_email) - intercepts email and routes 
 - [devel mail](https://api.drupal.org/api/devel/devel.mail.inc/7) - writes to local files
 
+#### What we often do to address _the problem_
 Given that possibility, we need to take care of how to best avoid this albeit nearly
 inevitable scenario. Often, before considering one of the above solutions, the 
 first step of measure is to have a policy to always sanitize our databases for development, 
@@ -40,8 +43,9 @@ and in the Drupal world, that typically means using the `drush sql-sanitize`
   Sadly, I'm not yet aware of a panacea for the send-emails-from-dev-environment
   sickness. Please [comment](#comment-form) if you know of one!
   
+##### The specific problem
   One pernicious case, in which `drush sqlsan` is insufficient, is when you have 
-  the [user_revision](https://www.drupal.org/project/user_revision )
+  the [user_revision](https://www.drupal.org/project/user_revision)
   module enabled, at least until they incorporate [my patch](https://www.drupal.org/node/2534638). The 
   user_revision module 
   [extends the `UserController`](http://cgit.drupalcode.org/user_revision/tree/user_revision.module?id=cce42174aec453e6652da8738e397df20b6f2cd0#n164) 
@@ -49,14 +53,27 @@ and in the Drupal world, that typically means using the `drush sql-sanitize`
     [the way that `entity_load()` works](http://cgit.drupalcode.org/drupal/tree/includes/entity.inc?h=7.x#n306) 
     the "revision" table, `user_revision` in the case, overwrites fields from the "base" table
     `users`. Therefore the user object will have the `mail` field from the `user_revision` table.
+  
+##### The specific solution
+    The solution was to [write a hook](https://www.drupal.org/node/2534638) 
+    that ensures the `user_revision` table `mail`
+    field will be effected the same as the `users` table when `drush sqlsan` is run.
+    You're welcome. 
 
  I discovered this when adding new cron, notification functionality for 
  [Tilthy Rich Compost](http://tilthyrichcompost.com). 
  We [began using](https://github.com/chrisarusso/Tilthy-Rich-Compost-Website/commit/fccc3f7387616510d512d3700639c5de3a560a1e) the `user_revision` 
  module in 2013 due to [losing valuable information](https://github.com/chrisarusso/Tilthy-Rich-Compost-Website/issues/29
-) from canceled users.
+) from canceled users. And for the 10th time in 2 years, I sent out emails to 
+my subscribers, even after paying close attention to ensuring sanitization
+before developing locally. I was determined to figure out once and for all, 
+what was going on. I stepped through with the debugger to uncover the issue,
+and it became clear that `user_revision` was the culprit. However, in order
+to write an appropriate drush hook, I would need to debug properly. 
+
+##### Setting up a debugger for debugging php cli scripts
   
-  So I wrote a patch,
+
 
   Which I of course found doing `git log --follow` 
   
