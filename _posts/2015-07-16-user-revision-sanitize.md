@@ -8,10 +8,10 @@ summary: The user revision module does not (_yet_) care about `drush sqlsan`, an
 ---
 
 #### The general problem
-One of the most embarrassing, and potentially costly things we can do as developers
+One of the most embarrassing and potentially costly things we can do as developers
 is to send emails out to real people unintentionally from a development 
-environment. It happens, and often times, we aren't even aware of it, until the damage
-is done, and a background process sends out, say, 11,000 automated emails to
+environment. It happens, and often times we aren't even aware of it until the damage
+is done and a background process sends out, say, 11,000 automated emails to
 existing customers (actually happened to a former employer recently). 
 
 
@@ -45,8 +45,7 @@ we do that by using the `drush sql-sanitize`
    writing about _most_ scenarios now am I? 
   Sadly, I'm not yet aware of a comprehensive solution that ensures no email will
    be sent from a development environment.
-   from development environments for the send-emails-from-dev-environment
-  sickness. Please [comment](#js-expander-trigger) if you know of one!
+   Please [comment](#js-expander-trigger) if you know of one!
   
 #### The _specific_ problem with `user_revision` module
 One pernicious case, in which `drush sqlsan` is insufficient in sanitizing your 
