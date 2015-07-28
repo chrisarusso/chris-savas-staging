@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "When drush sqlsan isn't enough"
+title: "When Drupal database sanitization isn't enough"
 date: 2015-07-16
 author: Chris Russo
 tags: drupal drupal8 best-practices
@@ -43,21 +43,23 @@ we do that by using the `drush sql-sanitize`
   So, in _most_ cases, `drush sqlsan` (alias) is enough, and the mail redirection
   options linked above are additional safety measures. Of course, I'm not
    writing about _most_ scenarios now am I? 
-  Sadly, I'm not yet aware of a panacea for the send-emails-from-dev-environment
-  sickness. Please [comment](#comment-form) if you know of one!
+  Sadly, I'm not yet aware of a comprehensive solution that ensures no email will
+   be sent from a development environment.
+   from development environments for the send-emails-from-dev-environment
+  sickness. Please [comment](#js-expander-trigger) if you know of one!
   
 #### The _specific_ problem with `user_revision` module
 One pernicious case, in which `drush sqlsan` is insufficient in sanitizing your 
 database, is when  
   the [`user_revision` module](https://www.drupal.org/project/user_revision)
-   is enabled, at least without [my patch](https://www.drupal.org/node/2534638) applied. The 
+   is enabled on a Drupal 7 site, at least without [my patch](https://www.drupal.org/node/2534638) applied. The 
   `user_revision` module 
   [extends the `UserController`](http://cgit.drupalcode.org/user_revision/tree/user_revision.module?id=cce42174aec453e6652da8738e397df20b6f2cd0#n164) 
   class, which overwrites fields from the "base" table
                    `users` (in the case) to the "revision" table, `user_revision`, due to
     [the way that `entity_load()` works](http://cgit.drupalcode.org/drupal/tree/includes/entity.inc?h=7.x#n306) 
-     . Therefore, when loading a user entity, it will receive the `mail` field 
-     from the `user_revision` table.
+     . Therefore, when a user entity is loaded, it receives the `mail` field 
+     from the `user_revision` table. Without the above patch applied, this table is not affected by `drush sqlsan`.
 
 
 #### How did I discover this?
@@ -75,14 +77,14 @@ aforementioned culprit.
 #### The solution to the _specific_ problem
 After consulting [Kosta](/team/kosta-harlan/), we agreed 
 that the solution would be to write a [drush hook](https://www.drupal.org/node/2534638) 
-that would execute additional
-code in the presence of the `user_revision` module which would also sanitize
-the `mail` field in the `user_revision` table. You're welcome community 
-<img src="http://www.emoji-cheat-sheet.com/graphics/emojis/wink.png" alt="winking emoji" class="emoji">. 
-However, to write this code efficiently, I would need to debug drush commands
+for the `user_revision` module. This code would need to sanitize
+ the `mail` field in the `user_revision` table and would be invoked when the
+ `drush sqlsan` command is executed in the presence of the `user_revision` 
+ module. 
+However, to write this code efficiently and effectively, I would need to debug drush commands
 during execution, which, I had never done.
 
-#### How to debug drush (or other CLI scripts) and PHPStorm  
+#### How to debug drush (or other CLI scripts) with PHPStorm  
     
 ##### Set up xdebug (Mac only)    
    I first installed xdebug with [homebrew](http://brew.sh/) via 
@@ -91,8 +93,8 @@ during execution, which, I had never done.
    
 ##### Upgrade to latest drush
 I [ensured I was using the most recent version of drush](http://whaaat.com/installing-drush-8-using-composer) 
-(I strongly recommend perusing Brant's [about page](http://whaaat.com/about))   
-   so that the code I wrote would apply to latest drush development.
+(I strongly recommend perusing Brant's [about page](http://whaaat.com/about)) to ensure that the code I wrote 
+would apply to most recent drush development.
 
 ##### Getting breakpoints in PHPStorm to listen to drush
 
@@ -105,39 +107,39 @@ I [ensured I was using the most recent version of drush](http://whaaat.com/insta
   seemed to use [xdebug](http://xdebug.org/) and [PHPStorm](https://www.jetbrains.com/phpstorm/),
   and though I use PHPStorm, 
   
->can't code without
+>can't code without it
  
   as Kosta always says,
   I have been using ZendDebugger for years, with reasonable success.
-    But, I had been dissatisfied of late, so I figured it to be a safe switch. The rest of 
-    the [team](/team) uses xdebug anyway.
+    But, I had been dissatisfied of late, and the rest of 
+    the [team](/team) uses xdebug anyway, so I figured it would be a safe switch, 
+    which proved true.
     
  After having xdebug properly installed, 
-, which [Kosta adds](https://github.com/kostajh/dotfiles/blob/master/.bashrc#L85) 
-to his `.bashrc` file to always load when debugging.
+you can [add a line](https://github.com/kostajh/dotfiles/blob/master/.bashrc#L85) 
+to your `.bashrc` file to always load when opening your terminal to execute drush
+commands.
   
   
 #### The solution in action
-  
-  So [now when running `drush sqlsan`](https://github.com/chrisarusso/Tilthy-Rich-Compost-Website/commit/cf8f04f65b9f782ebaaf84d4348043f5aeec8409), 
-  we can truly feel safe that we won't send emails to anyone we didn't mean to.
+So [now when running `drush sqlsan`](https://github.com/chrisarusso/Tilthy-Rich-Compost-Website/commit/cf8f04f65b9f782ebaaf84d4348043f5aeec8409), 
+  we can truly feel safe that we won't send emails to anyone we didn't mean to. You're welcome community 
+                                                                                <img src="http://www.emoji-cheat-sheet.com/graphics/emojis/wink.png" alt="winking emoji" class="emoji">
 
 #### Will `user_revision` exist in D8?
-It's not clear, though [some think so](https://www.drupal.org/sandbox/devpreview/2444961)
-https://www.drupal.org/node/2336681
+It's not clear, though [some](https://www.drupal.org/sandbox/devpreview/2444961)
+think [so](https://www.drupal.org/node/2336681).
 
-Perhaps mature D8 entities and core revisioning will render a separate module useless
+Perhaps mature D8 entities and revisioning on all entities will render a separate 
+module useless. Time will tell.
 
-
+<!--
 TODO:
 - Comment on Lullabot's recommendation [pending]
 - Schedule tweet calling out lullabot [pending]
 - Consider making a local.settings.php template that comments out 
-- Point to settings.php on TRC
 - Tweet
-- Follow people
- Which I of course found doing `git log --follow` 
-
+-->
 
 
 
