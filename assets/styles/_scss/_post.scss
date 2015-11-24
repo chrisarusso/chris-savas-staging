@@ -76,6 +76,13 @@
   width: 100%;
 }
 
+.caption {
+  display: block;
+  font-size: .9em;
+  margin: 0 auto 2em;
+  text-align: center;
+}
+
 // Comment block expander.
 .expander {
   $expander-arrow-width: .7em;
