@@ -23,9 +23,44 @@ Savas believes in giving back to the community. Several of our team members cont
 
 ---
 
+I like the ideahttps://forumone.com/services
+https://www.chapterthree.com/services/content
+
+
+### Strategy
+
+Consulting / strategic decision making, etc
+
+
+### Development
+content migrationintegrationse-commerceperformanceinfrastructuresecuritymultimedia/asset managementin-site searcheditorial workflowmultilingual
+#### Third party integration
+
+### SEO services
+
+Want to rank highly, we can help?
+
+### Usability testing
+
+We're doing them for Duke now, yeah?
+
+### Migration?
+
+We're skilled enough to build you the most complex of sites, but owl-wise enough
+to limit to customization only when absolutely necessary
+
+### Support
+
+### Site audits
+
+### Content
+
+
+### Training
+
 ### Automated testing
 
-<i class="fa fa-check-circle-o fa-2x fa-pull-left"></i>&nbsp;&nbsp;Testing. Every site needs it, but all too often in the industry this comes down to a time-consuming and tedious process of manually clicking through pages on the site.
+<i class="fa fa-check-circle-o fa-2x fa-pull-left"></i> Testing. Every site needs it, but all too often in the industry this comes down to a time-consuming and tedious process of manually clicking through pages on the site.
 
 The Savas team takes a different approach. We use automated tests in [Behat](http://behat.org), [PHPUnit](http://phpunit.de), [CasperJS](http://casperjs.org) and others, and integrate them with [Jenkins](http://jenkins-ci.org) and [Travis](http://travis-ci.org). We pride ourselves on delivering stable, secure, and tested code.
 
