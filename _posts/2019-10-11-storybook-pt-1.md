@@ -47,7 +47,9 @@ After tinkering with several solutions we finally settled on [Storybook](https:/
 
 ### Getting Storybook to Work for Us
 
-A friend to Savas gave us a great starter project that included Twig integration to get us up and running. We heavily changed and adapted that into our own setup. We’ll dig into specifics in a future post, but there were some challenges we faced along the way.
+# Make an obvious change
+
+Now this is bold **A friend to Savas gave us a great starter project that included Twig integration to get us up and running. We heavily changed and adapted that into our own setup. We’ll dig into specifics in a future post, but there were some challenges we faced along the way.**
 
 #### 1. Integrating Storybook into Drupal
 We ultimately created a Storybook directory within our site’s theme directory. This allows all of the templates in our Drupal theme to access Storybook components within the same project.
